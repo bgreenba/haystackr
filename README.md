@@ -3,29 +3,16 @@ A simple tool to generate web traffic, primarily intended for making infosec lab
 
 ## usage: haystackr.py [-h] [-p] [-s SLEEP_MS] [-v] [-x] [-a] [-m] [-l LIST_FILE]
 
-optional arguments:
-  -h, --help            show this help message and exit
+haystackr -h for more usage infromation
 
-## Configuration:  Program configuration settings
-switch|description
--|-
-  -p, --perpetual       |loop through the URL list until process is killed
-  -s SLEEP_MS, --sleep_ms SLEEP_MS                        |sleep value between requests for listed URLs, in milliseconds. (default 100)
-                        
-  -v, --verbose        |print diagnostic and troubleshooting information to stdout. Once for a reasonable amount, more for lots (0-4)
-                        
-  -x, --experiment      |Do everything except request the URLs. Most useful with -v
-                        
-                        
+Haystacker can read URLs from 
+* a user supplied file of URLs (one per line)
+* The first (free) page of the Alexa top 500 (which only shows 50)
+* The free list of the top 500 sites at moz.com
+* Any combination of the above
 
-## URL Sources:  Where to get the list of URLs - without at least one of these, it won't work
-  switch|description
-  -|-
-  -a, --alexa           |get the most visited top 50 sites from Alexa and add that to the URL list. WARNING: This option may cause your computer to download porn.                        
-  -m, --moz            |get the most visited top 500 sites from Moz and add that to the URL list. WARNING: This option may cause your computer to download porn.
-  
-  -l LIST_FILE, 
-  --list_file LIST_FILE  |specify a file to add to the list of URLs
+It then removes duplicates, and iterates through the resulting list, grabbing each URL and compiling a list of all src-referenced resources in that page (images, scripts, etc). That list is then deduplicated, and those files are requested. 
 
-This script simply generates web requests to a provided list of URLs. It will 
-also request all references resources with a 'src' attribute (eg; img, script)
+Once the list is complete, the program exits, unless the -p/perpetual option was specificed in which case it starts at the top of the list again. 
+
+This is not a spidering tool; there are already excellent tools for that. The only point was to crate a quick script to generate "clean" traffic.
