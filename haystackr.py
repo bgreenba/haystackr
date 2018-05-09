@@ -8,11 +8,6 @@ import requests, argparse, sys, time, urllib
 from bs4 import BeautifulSoup
 
 
-
-
-# import logging, , sys, configparser, argparse, json
-
- 
 def getopts(argv):
     parser = argparse.ArgumentParser(
         description='haystackr',
@@ -63,10 +58,12 @@ args=vars(getopts(sys.argv))
 verbose('\n'.join(['Command line options, including defaults','\n'.join('{}={}'.format(key, val) for key, val in args.items())]),2)
 
 
+
 ## Sanity checking
-#at least one URL source?
-if args['alexa'] is False and args['moz'] is False and args['list_file'] is not True:
+# at least one URL source?
+if args['alexa'] is False and args['moz'] is False and args['list_file'] is None:
     print('no URL sources specified... exiting')
+    exit()
     
 #get URLs
 urls=[]
@@ -91,16 +88,20 @@ if args['moz'] is True:
         urls.append(url)
 
 # if file specified, read list file to get URLs
-if args['list_file'] is True:
+if args['list_file'] is not None:
     verbose('reading list file '+args['list_file'].name)
     file_urls=args['list_file'].readlines()
+    file_urls= [ x.strip() for x in file_urls if not x.startswith('#') ]
     urls=urls+file_urls
 
 #make URL list unique
 verbose (str(len(urls))+' total URLs',1)
 urls=list(set(urls))
-verbose (str(len(urls))+' unique URLs',1)
 
+#remove empty string
+urls=[ u for u in urls if not u in ['','\n']]
+verbose ('----URL LIST----\n'+'\n'.join(urls)+'\n----LIST END----',3)
+verbose (str(len(urls))+' unique non-null URLs',1)
 
 ## do the things
 
