@@ -3,17 +3,17 @@ A simple tool to generate web traffic, primarily intended for making infosec lab
 
 ## Description
 
-Responding to a security incident can be like finding the proverbial needle in a haystack, when looking at network packet captures or at netowrk and security logs. Part of simulating these activities in a realistic fashion for training purposes is generating that haystack. 
+Responding to a security incident can be like finding the proverbial needle in a haystack, when looking at network packet captures or at network and security logs. Part of simulating these activities in a realistic fashion for training purposes is generating that haystack. 
 
-Haystackr creates that. 
+Haystackr does that by rapidly requesting URLs. 
 
-Haystacker can read URLs from 
+Haystackr can read URLs from 
 * a user supplied file of URLs (one per line)
 * The first (free) page of the Alexa top 500 (which only shows 50)
 * The free list of the top 500 sites at moz.com
 * Any combination of the above
 
-It then removes duplicates, and iterates through the resulting list, grabbing each URL and compiling a list of all src-referenced resources in that page (images, scripts, etc). That list is then deduplicated, and those files are requested. 
+It then removes duplicates, and iterates through the resulting list, grabbing each URL and compiling a list of all src-referenced resources in that page (images, scripts, etc). That list is then deduplicated per page, and those files are requested. 
 
 Once the list is complete, the program exits, unless the -p/perpetual option was specified - in which case it starts at the top of the list again. 
 
